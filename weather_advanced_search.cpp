@@ -63,12 +63,21 @@ int main() {
         }
     }
 
+    cout << "[DEBUG] Search criteria:" << endl;
+    cout << "  search_city: '" << search_city << "'" << endl;
+    cout << "  search_variable: '" << search_variable << "'" << endl;
+    cout << "  search_date: '" << search_date << "'" << endl;
+    cout << "  search_time: '" << search_time << "'" << endl;
+    cout << "  min_temp: '" << min_temp << "' (filter_temp: " << filter_temp << ")" << endl;
+
     bool found = false;
     for (const auto& point : data) {
+        cout << "[DEBUG] Comparing to data point: city='" << point.city << "', variable='" << point.variable << "', date='" << point.date << "', time='" << point.time << "', value=" << point.value << endl;
         bool match = matches(point.city, search_city) &&
                      matches(point.variable, search_variable) &&
                      matches(point.date, search_date) &&
                      matches(point.time, search_time);
+        cout << "[DEBUG] matches() result: " << match << endl;
         if (match) {
             if (filter_temp && to_lower(point.variable).find("temp") != string::npos) {
                 if (point.value <= min_temp) {
