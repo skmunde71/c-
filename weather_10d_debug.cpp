@@ -33,18 +33,31 @@ void debug_print(const WeatherDataPoint& point, int index) {
 }
 
 int main() {
-    cout << "[INFO] Initializing 10-dimensional weather data using struct and vector...\n";
+    cout << "[INFO] Interactive 10-dimensional weather data entry.\n";
+    int n;
+    cout << "Enter number of weather data points: ";
+    cin >> n;
+    cin.ignore(); // Clear newline
 
-    vector<WeatherDataPoint> weather_data = {
-        {"14:00", "2024-05-01", 40.7128, -74.0060, 10.0, "New York", "USA", "temperature", "sensor_01", "v1.2", 18.5},
-        {"14:00", "2024-05-01", 40.7128, -74.0060, 10.0, "New York", "USA", "humidity", "sensor_01", "v1.2", 60.0},
-        {"14:00", "2024-05-01", 25.7617, -80.1918, 2.0, "Miami", "USA", "temperature", "sensor_02", "v1.2", 28.0},
-        {"14:00", "2024-05-01", 25.7617, -80.1918, 2.0, "Miami", "USA", "humidity", "sensor_02", "v1.2", 70.0},
-        {"15:00", "2024-05-01", 40.7128, -74.0060, 10.0, "New York", "USA", "temperature", "sensor_01", "v1.2", 19.0},
-        {"15:00", "2024-05-01", 25.7617, -80.1918, 2.0, "Miami", "USA", "temperature", "sensor_02", "v1.2", 29.0}
-    };
+    vector<WeatherDataPoint> weather_data;
+    for (int i = 0; i < n; ++i) {
+        WeatherDataPoint point;
+        cout << "\n[INPUT] Data Point " << i << ":\n";
+        cout << "  Time (e.g., 14:00): "; getline(cin, point.time);
+        cout << "  Date (e.g., 2024-05-01): "; getline(cin, point.date);
+        cout << "  Latitude (e.g., 40.7128): "; cin >> point.latitude; cin.ignore();
+        cout << "  Longitude (e.g., -74.0060): "; cin >> point.longitude; cin.ignore();
+        cout << "  Altitude (meters): "; cin >> point.altitude; cin.ignore();
+        cout << "  City: "; getline(cin, point.city);
+        cout << "  Country: "; getline(cin, point.country);
+        cout << "  Variable (e.g., temperature): "; getline(cin, point.variable);
+        cout << "  Device ID: "; getline(cin, point.device_id);
+        cout << "  Model Version: "; getline(cin, point.model_version);
+        cout << "  Value: "; cin >> point.value; cin.ignore();
+        weather_data.push_back(point);
+    }
 
-    cout << "[INFO] Weather data initialized. Total points: " << weather_data.size() << "\n\n";
+    cout << "\n[INFO] Weather data entry complete. Total points: " << weather_data.size() << "\n\n";
 
     // Debug print each data point
     for (size_t i = 0; i < weather_data.size(); ++i) {
