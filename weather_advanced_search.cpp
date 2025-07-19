@@ -65,18 +65,27 @@ int main() {
 
     bool found = false;
     for (const auto& point : data) {
-        if (matches(point.city, search_city) &&
-            matches(point.variable, search_variable) &&
-            matches(point.date, search_date) &&
-            matches(point.time, search_time)) {
-            // Only filter by min_temp if the variable is temperature
+        bool match = matches(point.city, search_city) &&
+                     matches(point.variable, search_variable) &&
+                     matches(point.date, search_date) &&
+                     matches(point.time, search_time);
+        if (match) {
             if (filter_temp && to_lower(point.variable).find("temp") != string::npos) {
-                if (point.value <= min_temp) continue;
+                if (point.value <= min_temp) {
+                    cout << "[DEBUG] Skipping " << point.city << " " << point.variable << " value=" << point.value << " <= min_temp=" << min_temp << endl;
+                    continue;
+                } else {
+                    cout << "[DEBUG] Matched (temp filter): " << point.city << " " << point.variable << " value=" << point.value << " > min_temp=" << min_temp << endl;
+                }
+            } else {
+                cout << "[DEBUG] Matched: " << point.city << " " << point.variable << " value=" << point.value << endl;
             }
             cout << "Found: " << point.city << " " << point.variable
                  << " at " << point.time << " on " << point.date
                  << " = " << point.value << endl;
             found = true;
+        } else {
+            cout << "[DEBUG] Not matched: " << point.city << " " << point.variable << " value=" << point.value << endl;
         }
     }
     if (!found) {
