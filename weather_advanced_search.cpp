@@ -52,9 +52,11 @@ int main() {
     cout << "Enter minimum temperature (or leave blank for any): ";
     string temp_input;
     getline(cin, temp_input);
+    bool filter_temp = false;
     if (!temp_input.empty()) {
         try {
             min_temp = stod(temp_input);
+            filter_temp = true;
         } catch (...) {
             cout << "Invalid temperature input. Using no minimum filter.\n";
             min_temp = -1e9;
@@ -67,8 +69,10 @@ int main() {
             matches(point.variable, search_variable) &&
             matches(point.date, search_date) &&
             matches(point.time, search_time)) {
-            if (to_lower(point.variable).find("temp") != string::npos && point.value <= min_temp) continue;
-            if (!temp_input.empty() && to_lower(point.variable).find("temp") != string::npos && point.value <= min_temp) continue;
+            // Only filter by min_temp if the variable is temperature
+            if (filter_temp && to_lower(point.variable).find("temp") != string::npos) {
+                if (point.value <= min_temp) continue;
+            }
             cout << "Found: " << point.city << " " << point.variable
                  << " at " << point.time << " on " << point.date
                  << " = " << point.value << endl;
